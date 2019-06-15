@@ -29,4 +29,33 @@ defmodule CardsTest do
             end
         end)
     end
+
+    test "chupai" do
+        {:ok, cards, cards_left} = Player.chupai(:queue.from_list([1,2,3]))
+        assert cards |> :queue.to_list == [1]
+        assert cards_left |> :queue.to_list == [2,3]
+
+        {:ok, cards, cards_left} = Player.chupai(:queue.from_list([1,2,3]),2)
+        assert cards |> :queue.to_list == [1,2]
+        assert cards_left |> :queue.to_list == [3]
+
+        {:ok, cards,cards_left} = Player.chupai(:queue.from_list([1,2,3]),3)
+        assert cards |> :queue.to_list == [1,2,3]
+        assert cards_left |> :queue.to_list == []
+
+        {:error, msg} = Player.chupai(:queue.from_list([1,2,3]),4)
+        IO.puts msg
+        
+        {:error, msg} = Player.chupai(:queue.from_list([1,2,3]),0)
+        IO.puts msg
+        
+        {:error, msg} = Player.chupai(:queue.from_list([]),0)
+        IO.puts msg
+
+    end
+
+    test "yingpai" do
+        cards = Player.yingpai(:queue.from_list([1,2,3]),:queue.from_list([4,5]))
+        assert cards |> :queue.to_list == [1,2,3,4,5]
+    end
 end
