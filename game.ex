@@ -1,15 +1,65 @@
 defmodule Game do
-    def display do
+    def check do
         receive do
-            {player, {:ok, {cards, _}}} ->
+            {player, {:ok, cards_que}} ->
+                {cards, _} = cards_que
                 IO.puts "recevie #{cards} from #{player}"
+                {:ok, cards}
             {player, {:error, msg}} ->
-                IO.puts "Game over,#{player} lost, #{msg}"
+                IO.puts "recevie #{msg} from #{player}"
+                {:error,msg}
             msg ->
                 IO.puts "unknow message"
                 inspect msg
         end
-        display()
+    end
+
+    def fullplay(player1,player2) do
+        case oneplay(player1,player2) do
+            :continue ->
+                fullplay(player1,player2)
+            :end ->
+                IO.puts "game over"
+            msg ->
+                IO.puts "full play msg #{msg}"
+        end
+    end
+
+    def oneplay(player1, player2, num_cards \\ 1, cards_left \\ []) do
+        send(player1,{:chupai, num_cards, self()})
+        {msg,player1_cards} = check()
+        send(player2,{:chupai, num_cards, self()})
+        {msg2,player2_cards} = check()
+        if msg == :error do
+            IO.puts "Game over, player1 lost, #{msg}"
+            :end
+        end
+        if msg2 == :error do
+            IO.puts "Game over, player2 lost, #{msg2}"
+            :end
+        end
+        :end
+        if (msg == :ok and msg2 == :ok) do
+            p1 = List.last(player1_cards) |> String.last() |> String.to_integer()
+            p2 = List.last(player2_cards) |> String.last() |> String.to_integer()
+            IO.puts "p1 #{p1} p2 #{p2}"
+            if p1 == p2 do
+                IO.puts "compare again"
+                oneplay(player1, player2, p1, player2_cards ++ player1_cards ++ cards_left)
+            end
+            if p1 > p2 do
+                 IO.puts "player1 win"
+                 send(player1,{:yingpai, :queue.from_list(player2_cards ++ player1_cards ++ cards_left)})
+                 :continue
+            end
+            
+            if p1 < p2 do
+                IO.puts "Player2 win" 
+                send(player2,{:yingpai, :queue.from_list(player2_cards ++ player1_cards ++ cards_left)})
+                :continue
+            end
+        end
+        :continue
     end
 
     def start do
@@ -24,9 +74,6 @@ defmodule Game do
         player2_cards = Enum.slice(cards,26..51) |> :queue.from_list()
         player1 = spawn(fn -> Player.play(player1_cards, :player1) end)
         player2 = spawn(fn -> Player.play(player2_cards, :player2) end)
-        display = spawn(&display/0)
-        send(player1,{:chupai, 1, display})
-        send(player2,{:chupai, 1, display})
 
 
     end
