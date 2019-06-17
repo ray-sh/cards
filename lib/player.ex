@@ -1,4 +1,5 @@
 defmodule Player do
+    use GenServer
     #all cards are :queue type
     @empyt_que :queue.new()
     def chupai(cards_in_hand,num \\ 1,out_cards \\ @empyt_que)
@@ -8,7 +9,6 @@ defmodule Player do
         {{:value, card}, cards_in_hand} = :queue.out(cards_in_hand)
         {:ok, :queue.in(card,out_cards),cards_in_hand}
     end
-
 
     def chupai(cards_in_hand,num,out_cards) do
         #all cards are :queue type
@@ -23,6 +23,28 @@ defmodule Player do
     def yingpai(cards_in_hand, new_cards) do
         #all cards are :queue type
         :queue.join(cards_in_hand,new_cards)
+    end
+
+    @impl true
+    def init(cards) do
+        {:ok, cards}
+    end
+
+    @impl true
+    def handle_call(action, _from, cards) do
+        case action do
+            {:chupai, num_of_cards} ->
+                case chupai(cards,num_of_cards) do
+                    {:error, msg} ->
+                        {:reply,{:error, msg},cards}
+                    {:ok, out_cards, left_cards} ->
+                        {:reply, {:ok, out_cards}, left_cards}
+                end
+            {:yingpai, new_cards} ->
+                {:reply,:queue.join(cards, new_cards),:queue.join(cards, new_cards)}
+            msg ->
+                    IO.puts "unknow message #{msg}"
+        end
     end
 
     def play(cards, player_name) do
