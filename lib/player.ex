@@ -41,34 +41,11 @@ defmodule Player do
                         {:reply, {:ok, out_cards}, left_cards}
                 end
             {:yingpai, new_cards} ->
-                {:reply,:queue.join(cards, new_cards),:queue.join(cards, new_cards)}
+                {:reply,{:ok,:queue.join(cards, new_cards)},:queue.join(cards, new_cards)}
+            {:cards} ->
+                {:reply,{:ok,cards},cards}
             msg ->
                     IO.puts "unknow message #{msg}"
-        end
-    end
-
-    def play(cards, player_name) do
-        #all cards are :queue type
-        receive do
-            {:fapai, cards} ->
-                play(cards,player_name)
-            {:chupai, num_of_cards, to_who} ->
-                case chupai(cards,num_of_cards) do
-                    {:error, msg} ->
-                        send(to_who,{player_name, {:error, msg}})
-                    {:ok, out_cards, left_cards} ->
-                        send(to_who,{player_name, {:ok, out_cards}})
-                        play(left_cards,player_name)
-                end
-            {:yingpai, new_cards} ->
-                play(:queue.join(cards, new_cards),player_name)
-
-            {:cards, to_who} ->
-                send(to_who, {:ok, cards})
-                play(cards,player_name)
-            msg ->
-                IO.puts "unknow message #{msg}"
-
         end
     end
 end
