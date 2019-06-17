@@ -1,4 +1,6 @@
 # Cards
+An online web game to play cards
 
-v1 goal is using GenServer to implement current logic
+v0.1
+Implement the core function to play card game
 
