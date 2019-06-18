@@ -32,7 +32,7 @@ defmodule Cards do
         {:noreply, Enum.shuffle(cards)}
     end
 
-    def get_cards, do: @cards
+    def get_cards, do: @cards |> Enum.shuffle()
 
     def fapai(cards) do
         card = Enum.take_random(cards,1)
