@@ -33,14 +33,15 @@ defmodule Game do
     def oneplay(player1, player2, num_cards \\ 1, cards_left \\ []) do
         {msg,player1_cards} = GenServer.call(player1,{:chupai,num_cards})
         {msg2,player2_cards} = GenServer.call(player2,{:chupai,num_cards})
-        player1_cards = player1_cards |> :queue.to_list 
-        player2_cards = player2_cards |> :queue.to_list
-        IO.puts "player1 cards #{player1_cards}"
-        IO.puts "player2 cards #{player2_cards}"
+
 
         if (msg == :ok and msg2 == :ok) do
-            p1 = player1_cards  |> List.last() |> String.last() |> String.to_integer()
-            p2 = player2_cards  |> List.last() |> String.last() |> String.to_integer()
+            player1_cards = player1_cards |> :queue.to_list
+            player2_cards = player2_cards |> :queue.to_list
+            IO.puts "player1 cards #{player1_cards}"
+            IO.puts "player2 cards #{player2_cards}"
+            p1 = player1_cards  |> List.last() |> String.slice(1..10) |> String.to_integer()
+            p2 = player2_cards  |> List.last() |> String.slice(1..10) |> String.to_integer()
             IO.puts "p1 #{p1} p2 #{p2}"
             cond do
                 p1 == p2 ->
