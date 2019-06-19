@@ -28,6 +28,7 @@ use Mix.Config
 # here (which is why it is important to import them last).
 #
 #     import_config "#{Mix.env()}.exs"
-config :logger, 
+config :logger,
   backends: [:console], # default, support for additional log sinks
-  compile_time_purge_level: :info # purges logs with lower level than this
+  compile_time_purge_level: :info ,# purges logs with lower level than this
+  sync_threshold: 0
