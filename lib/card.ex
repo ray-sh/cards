@@ -14,17 +14,14 @@ defmodule Cards do
     end
 
     @impl true
-    def handle_call(action, from, cards) do
-        case action do
-            :fapai ->
-                {card, left_cards} = fapai(cards)
-                {:reply, card, left_cards}
-            :left_cards ->
-                {:reply, cards, cards}
-            msg ->
-                IO.puts "unknow message #{msg}"
+    def handle_call(:fapai, _from, cards) do
+        {card, left_cards} = fapai(cards)
+        {:reply, card, left_cards}
+    end
 
-        end
+    @impl true
+    def handle_call(:left_cards, _from, cards) do
+        {:reply, cards, cards}
     end
 
     @impl true
@@ -34,15 +31,15 @@ defmodule Cards do
 
     def get_cards, do: @cards |> Enum.shuffle()
 
+    def fapai([]), do: {[],[]}
+
     def fapai(cards) do
         card = Enum.take_random(cards,1)
         left_cards = Enum.drop_while(cards, fn x -> x == card end)
         {card, left_cards}
     end
 
-    def fapai([]) do
-        {[],[]}
-    end
+    
 
 
 end

@@ -31,21 +31,23 @@ defmodule Player do
     end
 
     @impl true
-    def handle_call(action, _from, cards) do
-        case action do
-            {:chupai, num_of_cards} ->
-                case chupai(cards,num_of_cards) do
-                    {:error, msg} ->
-                        {:reply,{:error, msg},cards}
-                    {:ok, out_cards, left_cards} ->
-                        {:reply, {:ok, out_cards}, left_cards}
-                end
-            {:yingpai, new_cards} ->
-                {:reply,{:ok,:queue.join(cards, new_cards)},:queue.join(cards, new_cards)}
-            {:cards} ->
-                {:reply,{:ok,cards},cards}
-            msg ->
-                    IO.puts "unknow message #{msg}"
-        end
+    def handle_call({:chupai, num_of_cards}, _from, cards) do
+        case chupai(cards,num_of_cards) do
+            {:error, msg} ->
+                {:reply,{:error, msg},cards}
+            {:ok, out_cards, left_cards} ->
+                {:reply, {:ok, out_cards}, left_cards}
+        end       
     end
+
+    @impl true
+    def handle_call({:yingpai, new_cards}, _from, cards) do
+        {:reply,{:ok,:queue.join(cards, new_cards)},:queue.join(cards, new_cards)}      
+    end
+
+    @impl true
+    def handle_call({:cards}, _from, cards) do
+        {:reply,{:ok,cards},cards}    
+    end
+
 end
