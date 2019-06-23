@@ -30,5 +30,5 @@ use Mix.Config
 #     import_config "#{Mix.env()}.exs"
 config :logger,
   backends: [:console], # default, support for additional log sinks
-  compile_time_purge_level: :info ,# purges logs with lower level than this
+  compile_time_purge_level: :debug ,# purges logs with lower level than this
   sync_threshold: 0
