@@ -11,10 +11,14 @@ defmodule Ddz.Player do
     end
 
     @impl true
-    def init(cards) do
-        IO.puts "Player init cards #{cards}"
+    def init(_) do
+        {:ok,{}}
+    end
 
-        {:ok,cards}
+    @impl true
+    def handle_cast({:fapai,new_cards}, _) do
+        Logger.debug "fapai #{new_cards}"
+        {:noreply,new_cards}
     end
 
     @impl true
@@ -22,6 +26,7 @@ defmodule Ddz.Player do
         Logger.debug "Player current cards #{cards}"
         out_cards = chupai(cards)
         Logger.debug("Player chuapai #{out_cards}")
-        {:reply,{:play,out_cards},cards -- out_cards}
+        left_cards = cards -- out_cards
+        {:reply,{:play,out_cards,length(left_cards)},cards -- out_cards}
     end
 end

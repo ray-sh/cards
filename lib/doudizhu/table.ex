@@ -10,32 +10,18 @@ defmodule Ddz.Table do
         elem(players,rem(active_player,(tuple_size(players))))
     end
 
-    @impl true
-    def init([players, active_player, cards]) do
-        {:ok, [players, active_player, cards]}
+    def start_game(players, active_player,cards) do
+        #TODO:
+        player =  get_player(players,active_player)
+        {:play,new_cards} = GenServer.call(player,:chupai)
+
     end
 
     @impl true
-    def handle_cast({:play,new_cards}, [players, active_player, cards]) do
-        Logger.debug ":play #{new_cards}"
-        GenServer.call(get_player(players,active_player),:chupai)
-        {:noreply,[players, active_player+1,[new_cards|cards]]}
+    def init(_) do
+        {:ok, [{}, nil, []]}
     end
-
-    @impl true
-    def handle_cast(:start,[players, active_player, cards]) do
-        Logger.info "table start"
-        Logger.debug("start from player #{active_player}")
-        GenServer.call(get_player(players,active_player),:chupai)
-        {:noreply,[players, active_player+1, cards]}
-    end
-
-    @impl true
-    def handle_call({:play,:skip},_from,[players, active_player, cards]) do
-        GenServer.call(get_player(players,  active_player),:chupai)
-        {:noreply,[players, active_player+1,cards]}
-    end
-
+    
     @impl true
     def handle_call({:join, player}, _from, [players, active_player, cards]) do
         case tuple_size(players) do
