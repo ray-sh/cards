@@ -13,16 +13,34 @@ defmodule TableTest do
         assert Table.get_player({1,2,3},3) == 1
     end
 
+    test "ddz.player test" do
+        cards = Cards.get_cards()
+        GenServer.start_link(Player,nil, name: :player1)
+        GenServer.start_link(Player,nil, name: :player2)
+        GenServer.start_link(Player,nil, name: :player3)
+        GenServer.cast(:player1,{:fapai,Enum.slice(cards,0..1)})
+        GenServer.cast(:player2,{:fapai,Enum.slice(cards,5..9)})
+        GenServer.cast(:player3,{:fapai,Enum.slice(cards,10..14)})
+
+        {:play,out_cards,1} = GenServer.call(:player1,:chupai)
+        assert out_cards
+
+        {:play,out_cards,0} = GenServer.call(:player1,:chupai)
+        assert out_cards
+
+        {:play,out_cards,0} = GenServer.call(:player1,:chupai)
+        assert out_cards
+
+    end
+
     test "Table GenServer" do
-        {:ok, table} = GenServer.start_link(Table,nil)
-
-        {:ok,player1} = GenServer.start_link(Player,nil)
-        {:ok,player2} = GenServer.start_link(Player,nil)
-        {:ok,player3} = GenServer.start_link(Player,nil)
-
-        :ok = GenServer.call(table,{:join, player1})
-        :ok = GenServer.call(table,{:join, player2})
-        :ok = GenServer.call(table,{:join, player3})
-        :error_table_full = GenServer.call(table,{:join, player3})
+        cards = Cards.get_cards()
+        GenServer.start_link(Player,nil, name: Player1)
+        GenServer.start_link(Player,nil, name: Player2)
+        GenServer.start_link(Player,nil, name: Player3)
+        GenServer.cast(Player1,{:fapai,Enum.slice(cards,0..4)})
+        GenServer.cast(Player2,{:fapai,Enum.slice(cards,5..9)})
+        GenServer.cast(Player3,{:fapai,Enum.slice(cards,10..14)})
+        Table.start_game({Player1,Player2,Player3}, 0, [] )
     end
 end

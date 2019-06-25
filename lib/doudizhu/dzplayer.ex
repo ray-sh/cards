@@ -12,7 +12,7 @@ defmodule Ddz.Player do
 
     @impl true
     def init(_) do
-        {:ok,{}}
+        {:ok,[]}
     end
 
     @impl true

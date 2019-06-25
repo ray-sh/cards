@@ -4,35 +4,22 @@ defmodule Ddz.Table do
     2.The table is response to ask next player to put cards
     '''
     require Logger
-    use GenServer
 
     def get_player(players, active_player) do
         elem(players,rem(active_player,(tuple_size(players))))
     end
 
     def start_game(players, active_player,cards) do
-        #TODO:
         player =  get_player(players,active_player)
-        {:play,new_cards} = GenServer.call(player,:chupai)
-
-    end
-
-    @impl true
-    def init(_) do
-        {:ok, [{}, nil, []]}
-    end
-    
-    @impl true
-    def handle_call({:join, player}, _from, [players, active_player, cards]) do
-        case tuple_size(players) do
-            0 ->
-                {:reply,:ok,[Tuple.append(players,player), 0, cards]}
-            1 ->
-                {:reply,:ok,[Tuple.append(players,player), active_player, cards]}
-            2 -> 
-                {:reply,:ok,[Tuple.append(players,player), active_player, cards]}
+        {:play, new_cards, num_cards_left} = GenServer.call(player,:chupai)
+        cards = [ new_cards | cards]
+        Logger.info "#{player} chupai #{new_cards} with left cards num #{num_cards_left}"
+        Logger.info "cards on table #{cards}"
+        case num_cards_left do
+            0->
+                Logger.info("Game over, winner is #{player}")
             _ ->
-                {:reply,:error_table_full, [players, active_player, cards]}
+                start_game(players, active_player + 1, cards)
 
         end
     end
