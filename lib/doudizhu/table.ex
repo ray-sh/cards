@@ -5,12 +5,12 @@ defmodule Ddz.Table do
     '''
     require Logger
 
-    def get_player(players, active_player) do
+    def next_player(players, active_player) do
         elem(players,rem(active_player,(tuple_size(players))))
     end
 
     def start_game(players, active_player,cards) do
-        player =  get_player(players,active_player)
+        player =  next_player(players,active_player)
         {:play, new_cards, num_cards_left} = GenServer.call(player,:chupai)
         cards = [ new_cards | cards]
         Logger.info "#{player} chupai #{new_cards} with left cards num #{num_cards_left}"

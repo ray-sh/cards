@@ -2,15 +2,25 @@ defmodule TableTest do
     use ExUnit.Case
     alias Ddz.Table
     alias Ddz.Player
-    test "Table" do
-        assert True
-    end
 
     test "Next player" do
-        assert Table.get_player({1,2,3},0) == 1
-        assert Table.get_player({1,2,3},1) == 2
-        assert Table.get_player({1,2,3},2) == 3
-        assert Table.get_player({1,2,3},3) == 1
+        assert Table.next_player({1,2,3},0) == 1
+        assert Table.next_player({1,2,3},1) == 2
+        assert Table.next_player({1,2,3},2) == 3
+        assert Table.next_player({1,2,3},3) == 1
+    end
+
+    test "dapai" do
+        assert Player.dapai("a1","d2") == false
+        assert Player.dapai("b2","d2") == false
+        assert Player.dapai("c3","d2") == true
+    end
+
+    test "chupai" do
+        assert Player.chupai(["a10"],["d2"]) == ["a10"]
+        assert Player.chupai(["a1","b2","c3"],["d2"]) == ["c3"] 
+        assert Player.chupai(["a1","b2","c3"],["d4"]) == [] 
+
     end
 
     test "ddz.player test" do
