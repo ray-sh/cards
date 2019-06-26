@@ -2,19 +2,19 @@ defmodule TableTest do
     use ExUnit.Case
     alias Ddz.Table
     alias Ddz.Player
-
+    import Ddz.Helper
     test "Next player" do
-        assert Table.next_player({1,2,3},0) == 1
-        assert Table.next_player({1,2,3},1) == 2
-        assert Table.next_player({1,2,3},2) == 3
-        assert Table.next_player({1,2,3},3) == 1
+        assert next_player({1,2,3},0) == 1
+        assert next_player({1,2,3},1) == 2
+        assert next_player({1,2,3},2) == 3
+        assert next_player({1,2,3},3) == 1
     end
 
     test "bigger" do
-        assert Player.bigger("a1","d2") == false
-        assert Player.bigger("b2","d2") == false
-        assert Player.bigger("c3","d2") == true
-        assert Player.bigger("c12","d10") == true
+        assert bigger("a1","d2") == false
+        assert bigger("b2","d2") == false
+        assert bigger("c3","d2") == true
+        assert bigger("c12","d10") == true
     end
 
     test "chupai" do

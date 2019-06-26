@@ -1,21 +1,12 @@
 defmodule Ddz.Player do
     require Logger
     use GenServer
+    import Ddz.Helper
     '''
     1.The player query the latest card on the table then deceived how to play the cards
     2.The player should check if the cards out are allowed
     '''
-    def bigger(_,nil) do
-        true
-    end
-
-    def bigger(card1, card2) do
-        card1 = card1 |> String.slice(1..10) |> String.to_integer()
-        card2 = card2 |> String.slice(1..10) |> String.to_integer()
-        Logger.debug "card1 #{card1}, card2 #{card2}"
-        card1 > card2
-    end
-
+    
     def chupai(cards,previous_cards) do
         Enum.filter(cards, fn x -> bigger(x,previous_cards|>List.first() ) end)
         |> Enum.take_random(1)

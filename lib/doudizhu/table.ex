@@ -4,19 +4,12 @@ defmodule Ddz.Table do
     2.The table is response to ask next player to put cards
     '''
     require Logger
-
-    def next_player(players, active_player) do
-        elem(players,rem(active_player,(tuple_size(players))))
-    end
-
+    import Ddz.Helper
+    
     def start_game(players,active_player,cards \\ [[]]) do
         player =  next_player(players,active_player)
         {:play, new_cards, num_cards_left} = GenServer.call(player,{:chupai, List.first(cards)})
-        cards =
-        case new_cards do
-            [] -> cards
-            _ -> [new_cards | cards]
-        end
+        cards = [new_cards | cards]
 
         Logger.info "#{player} chupai #{new_cards} with left cards num #{num_cards_left}"
         Logger.info "cards on table #{cards}"
