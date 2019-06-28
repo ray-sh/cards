@@ -25,8 +25,6 @@ defmodule Game do
       :end ->
         Logger.info("game over")
 
-      msg ->
-        Logger.info("full play msg #{msg}")
     end
   end
 
