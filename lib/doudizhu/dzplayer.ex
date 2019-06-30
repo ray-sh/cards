@@ -13,6 +13,15 @@ defmodule Ddz.Player do
     |> Enum.take_random(1)
   end
 
+  def join_table(tables) do
+    Enum.each(tables, fn {k,v} ->
+      Logger.info "There are #{3 - length(v)} seats left on table #{k}"
+    end)
+    Logger.info("Please input which table you want to join")
+    IO.read(:stdio, :line)
+    |> String.trim()
+  end
+
   @impl true
   def init(_) do
     {:ok, []}
@@ -31,5 +40,18 @@ defmodule Ddz.Player do
     Logger.debug("Player chuapai #{out_cards}")
     left_cards = cards -- out_cards
     {:reply, {:play, out_cards, length(left_cards)}, cards -- out_cards}
+  end
+
+  @impl true
+  def handle_call({:join, tables}, _from, cards) do
+    table = join_table(tables)
+    case GenServer.call(Server, {:join, table}) do
+      :ok ->
+        Logger.info "join table #{table} success"
+        {:reply, :ok, cards}
+      :table_full ->
+        Logger.info "Table #{table} is full"
+        {:reply,:table_full, cards}
+    end
   end
 end

@@ -15,3 +15,8 @@ The rules:
 3.The winner in the table got the first card and have highest priority to claim to be fields owner
 4.If all player are new, their priority is deceided by the order then sit down the table
 5.The fileds owner will got the last three cards and will chupai first
+6.Implement user login and select table to join in function, there are only two tabbles one
+
+TODO:
+Add supervisor support to current application
+Lesson learned so far

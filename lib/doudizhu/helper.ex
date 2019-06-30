@@ -41,6 +41,24 @@ defmodule Ddz.Helper do
     num_of_card(card1) > num_of_card(card2)
   end
 
+
+  def start_game(players, active_player, cards \\ [[]]) do
+    player = next_player(players, active_player)
+    {:play, new_cards, num_cards_left} = GenServer.call(player, {:chupai, List.first(cards)})
+    cards = [new_cards | cards]
+
+    Logger.info("#{player} chupai #{new_cards} with left cards num #{num_cards_left}")
+    Logger.info("cards on table #{cards}")
+
+    case num_cards_left do
+      0 ->
+        Logger.info("Game over, winner is #{player}")
+
+      _ ->
+        start_game(players, active_player + 1, cards)
+    end
+  end
+
   @spec num_of_card(binary) :: integer
   defp num_of_card(card) do
     card
