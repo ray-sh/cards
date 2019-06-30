@@ -20,3 +20,4 @@ The rules:
 TODO:
 Add supervisor support to current application
 Lesson learned so far
+http://blog.plataformatec.com.br/2015/10/mocks-and-explicit-contracts/
