@@ -8,7 +8,7 @@ v0.2
 Replace IO.puts with logger to simulate a simple play cards game
 
 v1.0
-Doudizhu card game, this game is played by three person. 
+Doudizhu card game, this game is played by three person.
 The rules:
 1.Each player get one card one by one, the order is deceided by the the time they sit down the table
 2.Each table has three player
@@ -20,4 +20,3 @@ The rules:
 TODO:
 Add supervisor support to current application
 Lesson learned so far
-http://blog.plataformatec.com.br/2015/10/mocks-and-explicit-contracts/
