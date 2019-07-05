@@ -22,6 +22,10 @@ defmodule Ddz.Player do
     |> String.trim()
   end
 
+  def start_link(name) do
+    GenServer.start(__MODULE__,nil, name: name)
+  end
+
   @impl true
   def init(_) do
     {:ok, []}
