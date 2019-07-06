@@ -5,8 +5,11 @@ defmodule DouzhizhuWeb.PageController do
     render(conn, "index.html")
   end
 
-  def login(conn, _params) do
-    render(conn, "login.html")
+  def tables(conn, %{"player" => name}) do
+    render(conn, "tables.html", player: name)
   end
 
+  def table(conn, %{"table" => _}) do
+    render(conn, "table.html")
+  end
 end

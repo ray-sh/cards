@@ -17,6 +17,8 @@ defmodule DouzhizhuWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+
+    get "/tables", PageController, :tables
   end
 
   # Other scopes may use custom stacks.

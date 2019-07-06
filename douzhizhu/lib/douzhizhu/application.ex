@@ -9,7 +9,8 @@ defmodule Douzhizhu.Application do
     # List all child processes to be supervised
     children = [
       # Start the endpoint when the application starts
-      DouzhizhuWeb.Endpoint
+      DouzhizhuWeb.Endpoint,
+      {TableSup, nil}
       # Starts a worker by calling: Douzhizhu.Worker.start_link(arg)
       # {Douzhizhu.Worker, arg},
     ]

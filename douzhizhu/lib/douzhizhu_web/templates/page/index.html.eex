@@ -1,4 +1,8 @@
 <section class="phx-hero">
   <h1><%= gettext "%{name}", name: "欢乐斗地主" %></h1>
+  <form action="/tables">
+    Name <br>
+    <input type="text" name="player">
+  </form>
 </section>
 

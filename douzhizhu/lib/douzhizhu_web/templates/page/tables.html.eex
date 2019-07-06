@@ -1,0 +1,10 @@
+<h1>欢迎<%= player_name(@conn) %>进入斗地主游戏</h1>
+
+<form action="/table">
+  <input type="radio" name="table" value="Ddz.Table" checked>
+  <input type="submit" value="Join">
+</form>
+
+  
+
+
