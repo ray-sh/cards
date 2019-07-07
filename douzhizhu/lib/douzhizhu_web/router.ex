@@ -19,6 +19,9 @@ defmodule DouzhizhuWeb.Router do
     get "/", PageController, :index
 
     get "/tables", PageController, :tables
+
+    get "/table", PageController, :table
+
   end
 
   # Other scopes may use custom stacks.

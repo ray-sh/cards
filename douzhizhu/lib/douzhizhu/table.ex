@@ -3,7 +3,7 @@ defmodule Table do
   The table is used to track all cards put by player
   """
   use GenServer
-
+  require Logger
   def start_link(name) do
     GenServer.start_link(__MODULE__, nil, name: name)
   end
@@ -24,11 +24,12 @@ defmodule Table do
   end
 
   @impl true
-  def handle_call({:join,player},_from, [players: players, plays: plays]) do
+  def handle_call({:join,player}, _from, [players: players, plays: plays]) do
+    Logger.info("User #{player} want to join")
     case length(players) do
       3 ->
         {:reply,:table_full,[players: players, plays: plays]}
-      true ->
+      _ ->
         {:reply,:ok,[players: [player | players], plays: plays]}
     end
   end

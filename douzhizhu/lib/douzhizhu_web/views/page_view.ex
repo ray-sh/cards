@@ -6,7 +6,12 @@ defmodule DouzhizhuWeb.PageView do
   end
 
   def players(table) do
-    {:ok, num} = GenServer.call(table, :players)
-    num
+    GenServer.call(table, :players)
+    |> Enum.join(",")
+     |> IO.inspect()
+  end
+
+  def all_tables do
+    Supervisor.which_children(TableSup) |> Enum.map(&elem(&1,0)) |>IO.inspect()
   end
 end
